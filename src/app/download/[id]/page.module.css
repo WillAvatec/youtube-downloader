@@ -1,0 +1,54 @@
+.main {
+  min-height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.container h2 {
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+.container img {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
+}
+
+.submit {
+  padding: 10px 15px;
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  border: 0;
+  cursor: pointer;
+}
+
+.fieldset {
+  margin: 0 10vw;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.radios {
+  display: grid;
+  place-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}

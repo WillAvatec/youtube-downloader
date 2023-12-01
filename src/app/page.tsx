@@ -1,17 +1,46 @@
+"use client";
+
 import styles from "@/app/page.module.css";
+import { ChangeEvent, FormEvent, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+
+const TOKEN = "AIzaSyCK1IdKQ7WUP9ZMv-HpiHyTKQNmQg8xBSU";
 
 export default function Home() {
+  const [keyword, setKeyword] = useState("");
+  const [videos, setVideos] = useState([]);
+
+  const sendRequestToApi = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${keyword}&key=${TOKEN}&fields=items(id,snippet)`,
+      {
+        method: "GET",
+      }
+    );
+    const json = await response.json();
+    setVideos(json.items);
+  };
+
+  const updateState = (e: ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  };
+
   return (
     <main className={styles.main}>
       <div>
-        <form>
+        <form onSubmit={sendRequestToApi}>
           <div className={styles.inputBox}>
             <label htmlFor="search-bar">Type a keyword to start looking:</label>
             <input
               id="search-bar"
+              name="keyword"
               className={styles.searchBar}
               type="text"
-              placeholder="Manly, Rubius, etc"
+              value={keyword}
+              onChange={updateState}
+              placeholder="Musica, Arte, Deporte..."
             />
           </div>
           <div className={styles.submit}>
@@ -19,6 +48,48 @@ export default function Home() {
           </div>
         </form>
       </div>
+      <div className={styles.videos}>
+        {videos.length > 0 && <Videos videos={videos} />}
+      </div>
     </main>
   );
 }
+
+function Videos({ videos }: { videos: Array<any> }) {
+  return (
+    <>
+      {videos.map((vid, i) => {
+        const { title, thumbnails, description, channelTitle } = vid.snippet;
+        return (
+          <Link
+            href={{
+              pathname: `/download/${vid.id.videoId}`,
+              query: {
+                q: encodeURIComponent(
+                  window.btoa(
+                    JSON.stringify({ title, channelTitle, thumbnails })
+                  )
+                ),
+              },
+            }}
+            key={i}
+          >
+            <div className={styles.videoItem}>
+              <Image
+                layout="fill"
+                src={thumbnails.high.url}
+                alt={description}
+              />
+              <div className={styles.details}>
+                <h4>{channelTitle}</h4>
+                <h3>{title}</h3>
+              </div>
+            </div>
+          </Link>
+        );
+      })}
+    </>
+  );
+}
+// Placeholder image for testing
+// https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg
