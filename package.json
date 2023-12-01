@@ -18,9 +18,11 @@
     "ytdl-core": "^4.11.5"
   },
   "devDependencies": {
+    "@types/base-64": "^1.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/utf8": "^3.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
     "typescript": "^5"
