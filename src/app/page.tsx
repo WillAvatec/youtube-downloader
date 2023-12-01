@@ -62,7 +62,7 @@ function Videos({ videos }: { videos: Array<any> }) {
     <>
       {videos.map((vid, i) => {
         const { title, thumbnails, description, channelTitle } = vid.snippet;
-        const bytes = utf8.encode(JSON.stringify(title, thumbnails, channelTitle))
+        const bytes = utf8.encode(JSON.stringify({title, thumbnails, channelTitle}))
         const encoded:string = base64.encode(bytes)
         return (
           <Link

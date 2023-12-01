@@ -20,7 +20,7 @@ const Page = ({ params, searchParams }: PageData) => {
 
   //Get data from encoded data from url
   const bytes = base64.decode(searchParams.q);
-  const text = JSON.parse(utf8.decode(bytes));
+  const snippet = JSON.parse(utf8.decode(bytes));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setformat(e.target.value);
