@@ -22,7 +22,6 @@ export default async function handler(
     const fileName = `${title}.${format === "audio" ? "mp3" : "mp4"}`;
 
     // Set Headers
-    res.setHeader("Content-Disposition", `attachment; filename=${fileName}`);
     const fileType = format === "audio" ? "audio/mpeg" : "video/mp4";
     res.setHeader("Content-Type", fileType);
     res.status(200);
