@@ -4,6 +4,8 @@ import styles from "@/app/page.module.css";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import utf8 from "utf8"
+import base64 from "base-64"
 
 const TOKEN = "AIzaSyCK1IdKQ7WUP9ZMv-HpiHyTKQNmQg8xBSU";
 
@@ -60,16 +62,14 @@ function Videos({ videos }: { videos: Array<any> }) {
     <>
       {videos.map((vid, i) => {
         const { title, thumbnails, description, channelTitle } = vid.snippet;
+        const bytes = utf8.encode(JSON.stringify(title, thumbnails, channelTitle))
+        const encoded:string = base64.encode(bytes)
         return (
           <Link
             href={{
               pathname: `/download/${vid.id.videoId}`,
               query: {
-                q: encodeURIComponent(
-                  window.btoa(
-                    JSON.stringify({ title, channelTitle, thumbnails })
-                  )
-                ),
+                q: encoded
               },
             }}
             key={i}

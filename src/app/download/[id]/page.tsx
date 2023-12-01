@@ -3,6 +3,8 @@
 import { FormEvent, useState } from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
+import utf8 from "utf8"
+import base64 from "base-64"
 
 type PageData = {
   params: {
@@ -17,8 +19,8 @@ const Page = ({ params, searchParams }: PageData) => {
   const [format, setformat] = useState<string | undefined>("audio");
 
   //Get data from encoded data from url
-  const decoded = window.atob(decodeURIComponent(searchParams.q));
-  const snippet = JSON.parse(decoded);
+  const bytes = base64.decode(searchParams.q);
+  const text = JSON.parse(utf8.decode(bytes));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setformat(e.target.value);

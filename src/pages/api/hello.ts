@@ -1,9 +1,7 @@
-import cp from "child_process";
 import type { NextApiRequest, NextApiResponse } from "next";
 import ytdl from "ytdl-core";
-import ffmpegPath from "ffmpeg-static";
 
-const URL = "https://www.youtube.com/watch?v=5JDRXIav2pw";
+const TEST_URL = "https://www.youtube.com/watch?v=5JDRXIav2pw";
 
 export const config = {
   api: {
@@ -43,7 +41,14 @@ export default async function handler(
         quality: "lowestvideo",
       });
 
-      return video.pipe(res);
+      video.on("data",chunk=>{
+        res.write(chunk)
+      })
+
+      video.on("end", ()=>{
+        res.end();
+      })
+      return 
     }
   }
 
