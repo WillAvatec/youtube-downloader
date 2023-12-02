@@ -1,11 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+import { NextResponse,NextRequest } from "next/server";
 import ytdl from "ytdl-core";
 import zlib from "zlib";
 
 const TEST_URL = "https://www.youtube.com/watch?v=5JDRXIav2pw";
 
-export async function POST (req:NextApiRequest){
+export async function POST (req:NextRequest){
   const { id, format } = req.body;
   const URL = `https://www.youtube.com/watch?v=${id}`;
 
