@@ -5,7 +5,8 @@ import zlib from "zlib";
 const TEST_URL = "https://www.youtube.com/watch?v=5JDRXIav2pw";
 
 export async function POST (req:NextRequest){
-  const { id, format } = req.body;
+  const body = await req.json()
+  const { id, format } = body;
   const URL = `https://www.youtube.com/watch?v=${id}`;
 
  const info = await ytdl.getBasicInfo(TEST_URL);
