@@ -17,7 +17,7 @@ type PageData = {
 
 const Page = ({ params, searchParams }: PageData) => {
   const [format, setformat] = useState<string | undefined>("audio");
-
+  const [request, setRequest] = useState<boolean>(false)
   //Get data from encoded data from url
   const bytes = base64.decode(searchParams.q);
   const snippet = JSON.parse(utf8.decode(bytes));
@@ -28,6 +28,7 @@ const Page = ({ params, searchParams }: PageData) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setRequest(true)
     const response = await fetch("/api/hello", {
       method: "POST",
       body: JSON.stringify({
@@ -40,13 +41,14 @@ const Page = ({ params, searchParams }: PageData) => {
       }),
     });
 
-    if (response.ok) {
-      const blob = await response.blob();
+    if(response.ok){
+      const blob = await response.blob()
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${snippet.title}.${format === "audio" ? "mp3" : "mp4"}`;
-      link.click();
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'downloaded_file.mp3'; // Use the provided filename or a default one
+      document.body.appendChild(a);
+      a.click();
       window.URL.revokeObjectURL(url);
     }
   };
@@ -54,40 +56,42 @@ const Page = ({ params, searchParams }: PageData) => {
   return (
     <main className={styles.main}>
       <SnippetData data={snippet} />
-      <form onSubmit={handleSubmit}>
-        <fieldset className={styles.fieldset}>
-          <legend>Please select your preferred format:</legend>
-          <div className={styles.radios}>
-            <div>
-              <input
-                type="radio"
-                id="audio"
-                value="audio"
-                name="format"
-                defaultChecked={true}
-                onChange={handleChange}
-              />
-              <label htmlFor="audio">Audio(mp3)</label>
-            </div>
-
-            <div>
-              <input
-                type="radio"
-                id="video"
-                value="video"
-                name="format"
-                onChange={handleChange}
-              />
-              <label htmlFor="video">Video(mp4)</label>
-            </div>
-            <div>
-              <button className={styles.submit} type="submit">
-                Descargar!!!
-              </button>
-            </div>
-          </div>
-        </fieldset>
-      </form>
+      {request ? <h1>Descargando, espera un momento</h1> : (
+              <form onSubmit={handleSubmit}>
+              <fieldset className={styles.fieldset}>
+                <legend>Please select your preferred format:</legend>
+                <div className={styles.radios}>
+                  <div>
+                    <input
+                      type="radio"
+                      id="audio"
+                      value="audio"
+                      name="format"
+                      defaultChecked={true}
+                      onChange={handleChange}
+                    />
+                    <label htmlFor="audio">Audio(mp3)</label>
+                  </div>
+      
+                  <div>
+                    <input
+                      type="radio"
+                      id="video"
+                      value="video"
+                      name="format"
+                      onChange={handleChange}
+                    />
+                    <label htmlFor="video">Video(mp4)</label>
+                  </div>
+                  <div>
+                    <button className={styles.submit} type="submit">
+                      Descargar!!!
+                    </button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+      )}
     </main>
   );
 };
@@ -107,8 +111,6 @@ type Snippet = {
 };
 const SnippetData = ({ data }: { data: Snippet }) => {
   const { channelTitle, thumbnails, title } = data;
-
-  console.log(data);
 
   return (
     <div className={styles.wrapper}>
