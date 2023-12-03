@@ -33,7 +33,7 @@ const Page = ({ params, searchParams }: PageData) => {
   const generateLink = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLink(()=>{
-      const link = `${API_URL}/${params.id}/${format}`
+      const link = `${API_URL}/video/${params.id}/${format}`
       const a = document.createElement("a")
       a.href = link
       a.target = "_blank"
