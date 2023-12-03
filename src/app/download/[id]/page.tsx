@@ -15,21 +15,36 @@ type PageData = {
   };
 };
 
+type Format = "audio" | "video"
+
+const API_URL = "https://ydtl-media-server.onrender.com"
+
 const Page = ({ params, searchParams }: PageData) => {
-  const [format, setformat] = useState<string | undefined>("audio");
-  const [request, setRequest] = useState<boolean>(false)
+  const [format, setformat] = useState<Format>("audio");
+  const [link, setLink] = useState<string | null>(null)
   //Get data from encoded data from url
   const bytes = base64.decode(searchParams.q);
   const snippet = JSON.parse(utf8.decode(bytes));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setformat(e.target.value);
+    setformat(e.target.value as Format);
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const generateLink = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setRequest(true)
-    const response = await fetch("/api/hello", {
+    setLink(()=>{
+      const link = `${API_URL}/${params.id}/${format}`
+      const a = document.createElement("a")
+      a.href = link
+      a.click()
+      a.remove()
+      return link
+    })
+  };
+
+  /*
+  PREVIOUS HANDLE SUBMIT
+        const response = await fetch("/api/hello", {
       method: "POST",
       body: JSON.stringify({
         id: params.id,
@@ -51,13 +66,13 @@ const Page = ({ params, searchParams }: PageData) => {
       a.click();
       window.URL.revokeObjectURL(url);
     }
-  };
+  */
 
   return (
     <main className={styles.main}>
       <SnippetData data={snippet} />
-      {request ? <h1>Descargando, espera un momento</h1> : (
-              <form onSubmit={handleSubmit}>
+      {link ? <h1>Descargando, espera un momento</h1> : (
+              <form onSubmit={generateLink}>
               <fieldset className={styles.fieldset}>
                 <legend>Please select your preferred format:</legend>
                 <div className={styles.radios}>
@@ -85,7 +100,7 @@ const Page = ({ params, searchParams }: PageData) => {
                   </div>
                   <div>
                     <button className={styles.submit} type="submit">
-                      Descargar!!!
+                      Procesar
                     </button>
                   </div>
                 </div>
