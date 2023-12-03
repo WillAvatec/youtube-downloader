@@ -36,6 +36,7 @@ const Page = ({ params, searchParams }: PageData) => {
       const link = `${API_URL}/${params.id}/${format}`
       const a = document.createElement("a")
       a.href = link
+      a.target = "_blank"
       a.click()
       a.remove()
       return link
