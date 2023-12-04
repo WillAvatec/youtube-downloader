@@ -17,15 +17,12 @@ type PageData = {
 
 type Format = "audio" | "video"
 
-const API_URL = "https://ydtl-media-server.onrender.com"
-
 const Page = ({ params, searchParams }: PageData) => {
   const [format, setformat] = useState<Format>("audio");
   const [link, setLink] = useState<string | null>(null)
   //Get data from encoded data from url
   const bytes = base64.decode(searchParams.q);
   const snippet = JSON.parse(utf8.decode(bytes));
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setformat(e.target.value as Format);
   };
@@ -33,7 +30,7 @@ const Page = ({ params, searchParams }: PageData) => {
   const generateLink = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLink(()=>{
-      const link = `${API_URL}/video/${params.id}/${format}`
+      const link = `${process.env.NEXT_PUBLIC_API_URL}/${format}/${params.id}/`
       const a = document.createElement("a")
       a.href = link
       a.target = "_blank"
@@ -42,32 +39,6 @@ const Page = ({ params, searchParams }: PageData) => {
       return link
     })
   };
-
-  /*
-  PREVIOUS HANDLE SUBMIT
-        const response = await fetch("/api/hello", {
-      method: "POST",
-      body: JSON.stringify({
-        id: params.id,
-        format: format,
-      }),
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      }),
-    });
-
-    if(response.ok){
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'downloaded_file.mp3'; // Use the provided filename or a default one
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-    }
-  */
 
   return (
     <main className={styles.main}>
@@ -133,7 +104,7 @@ const SnippetData = ({ data }: { data: Snippet }) => {
       <h1>{title}</h1>
       <h2>{channelTitle}</h2>
       <div className={styles.container}>
-        <Image src={thumbnails.high.url} alt={title} layout="fill" />
+        <Image src={thumbnails.high.url} alt={title} width={1000} height={720} />
       </div>
     </div>
   );
