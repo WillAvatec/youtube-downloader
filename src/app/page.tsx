@@ -32,7 +32,7 @@ export default function Home() {
       <div>
         <form onSubmit={sendRequestToApi}>
           <div className={styles.inputBox}>
-            <label htmlFor="search-bar">Type a keyword to start looking:</label>
+            <label htmlFor="search-bar">Escribe una palabra para empezar a buscar:</label>
             <input
               id="search-bar"
               name="keyword"
