@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <header>
           <Link href="/">
-            <h1>TRY TO CATCH ME! App</h1>
+            <h1>NoTube's Child</h1>
           </Link>
         </header>
         <div className="header-filler" />
