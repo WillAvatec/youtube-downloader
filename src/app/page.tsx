@@ -4,8 +4,8 @@ import styles from "@/app/page.module.css";
 import { ChangeEvent, FormEvent, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
-const TOKEN = "AIzaSyCK1IdKQ7WUP9ZMv-HpiHyTKQNmQg8xBSU";
+import utf8 from "utf8";
+import base64 from "base-64";
 
 export default function Home() {
   const [keyword, setKeyword] = useState("");
@@ -14,7 +14,7 @@ export default function Home() {
   const sendRequestToApi = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${keyword}&key=${TOKEN}&fields=items(id,snippet)`,
+      `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${keyword}&key=${process.env.NEXT_PUBLIC_TOKEN}&fields=items(id,snippet)`,
       {
         method: "GET",
       }
@@ -32,7 +32,7 @@ export default function Home() {
       <div>
         <form onSubmit={sendRequestToApi}>
           <div className={styles.inputBox}>
-            <label htmlFor="search-bar">Type a keyword to start looking:</label>
+            <label htmlFor="search-bar">Escribe una palabra para empezar a buscar:</label>
             <input
               id="search-bar"
               name="keyword"
@@ -44,7 +44,7 @@ export default function Home() {
             />
           </div>
           <div className={styles.submit}>
-            <button type="submit">Search</button>
+            <button type="submit">Buscar</button>
           </div>
         </form>
       </div>
@@ -60,23 +60,24 @@ function Videos({ videos }: { videos: Array<any> }) {
     <>
       {videos.map((vid, i) => {
         const { title, thumbnails, description, channelTitle } = vid.snippet;
+        const bytes = utf8.encode(
+          JSON.stringify({ title, thumbnails, channelTitle })
+        );
+        const encoded: string = base64.encode(bytes);
         return (
           <Link
             href={{
               pathname: `/download/${vid.id.videoId}`,
               query: {
-                q: encodeURIComponent(
-                  window.btoa(
-                    JSON.stringify({ title, channelTitle, thumbnails })
-                  )
-                ),
+                q: encoded,
               },
             }}
             key={i}
           >
             <div className={styles.videoItem}>
               <Image
-                layout="fill"
+                width={1000}
+                height={720}
                 src={thumbnails.high.url}
                 alt={description}
               />
