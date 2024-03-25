@@ -5,37 +5,7 @@
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
-}
-
-.inputBox {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.searchBar {
-  padding: 1rem 1.5rem;
-  border-radius: 1.4rem;
-  border: none;
-}
-
-.submit {
-  display: flex;
-  justify-content: center;
-}
-
-.submit button {
-  padding: 0.7rem 1rem;
-  background-color: #ffffff70;
-  border: 2px solid #3b3b3b;
-}
-
-.submit button:hover {
-  background-color: #3b3b3b;
-  color: #eee;
-  cursor: pointer;
+  color: white;
 }
 
 .videos {
