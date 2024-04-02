@@ -31,7 +31,8 @@ export default function InputBox({
   };
 
   return (
-    <form onSubmit={sendRequestToApi}>
+    <div className={styles.hero}>
+      <form onSubmit={sendRequestToApi}>
       <div className={styles.title}>
         <h2>Convertidor: Youtube</h2>
         <h3>El mejor conversor de video mp3 y mp4 de Youtube!</h3>
@@ -54,6 +55,10 @@ export default function InputBox({
           <button type="submit">OK</button>
         </div>
       </div>
+      <div>
+        <p>Introduzca el url de un vídeo de YouTube o la dirección URL de la video de YouTube - Vídeos de YouTube en el YouTube Converter</p>
+      </div>
     </form>
+    </div>
   );
 }
