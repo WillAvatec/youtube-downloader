@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
+import HeaderNav from "./components/HeaderNav/HeaderNav";
 
-const poppins = Poppins({ weight: ["300", "400"], subsets: ["latin"] });
+const poppins = Poppins({ weight: ["300", "400", "600"], subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "NOTUBE's CHILD",
@@ -18,26 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <header>
-          <Link href="/">
-            <h1>noTube</h1>
-          </Link>
-          <nav>
-            <ul>
-              <Link href="/">Pagina de Inicio</Link>
-            </ul>
-            <ul>
-              <Link href="/">Preguntas Frecuentes</Link>
-            </ul>
-            <ul>
-              <Link href="/">Sitios Compatibles</Link>
-            </ul>
-            <ul>
-              <Link href="/">Blog</Link>
-            </ul>
-          </nav>
-        </header>
-        <div className="header-filler" />
+        <HeaderNav />
         {children}
       </body>
     </html>
